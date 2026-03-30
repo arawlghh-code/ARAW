@@ -1,0 +1,26 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  --color-purple-point: #9D50FF;
+  --color-purple-dark: #7C3AED;
+  --color-ivory: #FDFCF8;
+  --animate-spin-slow: spin 12s linear infinite;
+}
+
+@layer base {
+  body {
+    @apply antialiased bg-white text-black;
+    font-family: var(--font-sans);
+    --gold-point: var(--color-purple-point);
+  }
+}
+
+.container {
+  @apply max-w-7xl mx-auto;
+}
+
+.logo-grid-item {
+  @apply grayscale opacity-40 transition-all duration-300 hover:grayscale-0 hover:opacity-100 flex items-center justify-center p-4 border border-black/5 bg-white;
+}

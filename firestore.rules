@@ -1,0 +1,170 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: works
+    // Document ID: auto-generated
+    // Fields:
+    //   - title_en: string (required)
+    //   - title_kr: string
+    //   - slug: string (required)
+    //   - category_en: string (required)
+    //   - category_kr: string
+    //   - year: string (required)
+    //   - featured: boolean
+    //   - thumbnail: string
+    //   - videoPreview: string
+    //   - shortDesc_en: string
+    //   - shortDesc_kr: string
+    //   - overview_en: string
+    //   - overview_kr: string
+    //   - visualDirection_en: string
+    //   - visualDirection_kr: string
+    //   - motionHighlights_en: string
+    //   - motionHighlights_kr: string
+    //   - deliverables_en: string
+    //   - deliverables_kr: string
+    //   - role_en: string
+    //   - role_kr: string
+    //   - tags_en: list
+    //   - tags_kr: list
+    //   - behanceUrl: string
+    //   - vimeoUrl: string
+    //   - gallery: list
+    //   - sortOrder: int
+    //
+    // Collection: visualNotes
+    // Document ID: auto-generated
+    // Fields:
+    //   - title_en: string (required)
+    //   - title_kr: string
+    //   - image: string (required)
+    //   - sortOrder: int
+    //
+    // Collection: settings
+    // Document ID: custom (e.g., 'general')
+    // Fields:
+    //   - imageUrl: string
+    //   - logoUrl: string
+    //   - behance: string
+    //   - vimeo: string
+    //   - instagram: string
+    //   - linkedin: string
+    //   - phone: string
+    //   - homeHeroUrl: string
+    //   - aboutHeroUrl: string
+    //
+    // Collection: services
+    // Document ID: auto-generated
+    // Fields:
+    //   - title_en: string (required)
+    //   - title_kr: string
+    //   - desc_en: string (required)
+    //   - desc_kr: string
+    //   - image: string
+    //   - sortOrder: int
+    //
+    // Collection: leads
+    // Document ID: auto-generated
+    // Fields:
+    //   - name: string (required)
+    //   - brand: string
+    //   - email: string (required)
+    //   - phone: string
+    //   - projectType: string
+    //   - projectDetails: string (required)
+    //   - createdAt: timestamp
+    //
+    // Collection: brands
+    // Document ID: auto-generated
+    // Fields:
+    //   - name: string (required)
+    //   - logo: string (required)
+    //   - sortOrder: int
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email == "arawlghh@gmail.com" && request.auth.token.email_verified == true);
+    }
+
+    // Validation Functions
+    function isValidWork(data) {
+      return data.title_en is string && data.title_en.size() > 0 && data.title_en.size() < 200 &&
+             data.slug is string && data.slug.size() > 0 && data.slug.size() < 100 &&
+             data.category_en is string && data.category_en.size() > 0 &&
+             data.year is string && data.year.size() > 0;
+    }
+
+    function isValidVisualNote(data) {
+      return data.title_en is string && data.title_en.size() > 0 &&
+             data.image is string && data.image.size() > 0;
+    }
+
+    function isValidService(data) {
+      return data.title_en is string && data.title_en.size() > 0 &&
+             data.desc_en is string && data.desc_en.size() > 0;
+    }
+
+    function isValidLead(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.email is string && data.email.size() > 0 && data.email.size() < 100 &&
+             data.projectDetails is string && data.projectDetails.size() > 0 && data.projectDetails.size() < 5000;
+    }
+
+    function isValidBrand(data) {
+      return data.name is string && data.name.size() > 0 &&
+             data.logo is string && data.logo.size() > 0;
+    }
+
+    // Rules
+    match /works/{workId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidWork(request.resource.data);
+      allow update: if isAdmin() && isValidWork(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /visualNotes/{noteId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidVisualNote(request.resource.data);
+      allow update: if isAdmin() && isValidVisualNote(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /services/{serviceId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidService(request.resource.data);
+      allow update: if isAdmin() && isValidService(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /leads/{leadId} {
+      allow read: if isAdmin();
+      allow create: if isValidLead(request.resource.data);
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+
+    match /brands/{brandId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidBrand(request.resource.data);
+      allow update: if isAdmin() && isValidBrand(request.resource.data);
+      allow delete: if isAdmin();
+    }
+  }
+}

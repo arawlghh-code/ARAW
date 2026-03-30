@@ -1,0 +1,134 @@
+{
+  "entities": {
+    "Work": {
+      "title": "Work",
+      "description": "A portfolio project item",
+      "type": "object",
+      "properties": {
+        "title_en": { "type": "string" },
+        "title_kr": { "type": "string" },
+        "slug": { "type": "string" },
+        "category_en": { "type": "string" },
+        "category_kr": { "type": "string" },
+        "year": { "type": "string" },
+        "featured": { "type": "boolean" },
+        "thumbnail": { "type": "string" },
+        "videoPreview": { "type": "string" },
+        "shortDesc_en": { "type": "string" },
+        "shortDesc_kr": { "type": "string" },
+        "overview_en": { "type": "string" },
+        "overview_kr": { "type": "string" },
+        "visualDirection_en": { "type": "string" },
+        "visualDirection_kr": { "type": "string" },
+        "motionHighlights_en": { "type": "string" },
+        "motionHighlights_kr": { "type": "string" },
+        "deliverables_en": { "type": "string" },
+        "deliverables_kr": { "type": "string" },
+        "role_en": { "type": "string" },
+        "role_kr": { "type": "string" },
+        "tags_en": { "type": "array", "items": { "type": "string" } },
+        "tags_kr": { "type": "array", "items": { "type": "string" } },
+        "behanceUrl": { "type": "string" },
+        "vimeoUrl": { "type": "string" },
+        "gallery": { "type": "array", "items": { "type": "string" } },
+        "sortOrder": { "type": "integer" }
+      },
+      "required": ["title_en", "slug", "category_en", "year"]
+    },
+    "VisualNote": {
+      "title": "Visual Note",
+      "description": "A visual reference or study note",
+      "type": "object",
+      "properties": {
+        "title_en": { "type": "string" },
+        "title_kr": { "type": "string" },
+        "image": { "type": "string" },
+        "sortOrder": { "type": "integer" }
+      },
+      "required": ["title_en", "image"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "General site settings",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "behance": { "type": "string" },
+        "vimeo": { "type": "string" },
+        "instagram": { "type": "string" },
+        "linkedin": { "type": "string" },
+        "heroVideoUrl": { "type": "string" },
+        "aboutHeroUrl": { "type": "string" },
+        "purpleColor": { "type": "string" }
+      }
+    },
+    "Service": {
+      "title": "Service",
+      "description": "A service offered",
+      "type": "object",
+      "properties": {
+        "title_en": { "type": "string" },
+        "title_kr": { "type": "string" },
+        "desc_en": { "type": "string" },
+        "desc_kr": { "type": "string" },
+        "image": { "type": "string" },
+        "sortOrder": { "type": "integer" }
+      },
+      "required": ["title_en", "desc_en"]
+    },
+    "Lead": {
+      "title": "Lead",
+      "description": "Consultation inquiry",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "brand": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "projectType": { "type": "string" },
+        "projectDetails": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "projectDetails"]
+    },
+    "Brand": {
+      "title": "Brand",
+      "description": "A client brand logo",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "logo": { "type": "string" },
+        "sortOrder": { "type": "integer" }
+      },
+      "required": ["name", "logo"]
+    }
+  },
+  "firestore": {
+    "/works/{workId}": {
+      "schema": "Work",
+      "description": "Collection of portfolio works"
+    },
+    "/visualNotes/{noteId}": {
+      "schema": "VisualNote",
+      "description": "Collection of visual notes"
+    },
+    "/settings/{settingId}": {
+      "schema": "Setting",
+      "description": "Collection of site settings"
+    },
+    "/services/{serviceId}": {
+      "schema": "Service",
+      "description": "Collection of services"
+    },
+    "/leads/{leadId}": {
+      "schema": "Lead",
+      "description": "Consultation leads"
+    },
+    "/brands/{brandId}": {
+      "schema": "Brand",
+      "description": "Collection of brand logos"
+    }
+  }
+}
